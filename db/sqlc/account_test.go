@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"github.com/techschool/simplebank/db/util"
+	"github.com/techschool/simplebank/util"
 )
 
 func createRandomAccount(t *testing.T) Account {
@@ -30,6 +30,7 @@ func createRandomAccount(t *testing.T) Account {
 
 	return account
 }
+
 func TestCreateAccount(t *testing.T) {
 	createRandomAccount(t)
 }
@@ -64,7 +65,6 @@ func TestUpdateAccount(t *testing.T) {
 	require.Equal(t, arg.Balance, account2.Balance)
 	require.Equal(t, account1.Currency, account2.Currency)
 	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
-
 }
 
 func TestDeleteAccount(t *testing.T) {
@@ -78,7 +78,7 @@ func TestDeleteAccount(t *testing.T) {
 	require.Empty(t, account2)
 }
 
-func TestListAccount(t *testing.T) {
+func TestListAccounts(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		createRandomAccount(t)
 	}
@@ -88,8 +88,11 @@ func TestListAccount(t *testing.T) {
 		Offset: 5,
 	}
 
-	account, err := testQueries.ListAccounts(context.Background(), arg)
+	accounts, err := testQueries.ListAccounts(context.Background(), arg)
 	require.NoError(t, err)
-	require.NotEmpty(t, account)
+	require.Len(t, accounts, 5)
 
+	for _, account := range accounts {
+		require.NotEmpty(t, account)
+	}
 }
