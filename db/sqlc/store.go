@@ -120,5 +120,8 @@ func addMoney(
 		ID:     accountID2,
 		Amount: amount2,
 	})
+	if err != nil {
+		return
+	}
 	return
 }
