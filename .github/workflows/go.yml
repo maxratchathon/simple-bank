@@ -1,15 +1,15 @@
 name: ci-test
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:12
@@ -42,9 +42,8 @@ jobs:
           sudo mv migrate.linux-amd64 /usr/bin/
           which migrate
 
-
       - name: run migration
         run: make migrateup
-      
+
       - name: Test
         run: make test
